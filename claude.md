@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: MIT -->
+`SPDX-License-Identifier: MIT`
+
 # fpga review: start here
 
 This project is for reviewing FPGA designs. Read these two files at the start of every session, before doing any work:

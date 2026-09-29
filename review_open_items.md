@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: MIT -->
+`SPDX-License-Identifier: MIT`
+
 # Review Open Items: fpga review
 
 Open items, conflicts and missing information (rules.md rules 6 and 6.1). Numbers only go up and are never reused. Closed items are removed from the list.

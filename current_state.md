@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: MIT -->
+`SPDX-License-Identifier: MIT`
+
 # Current State: fpga review
 
 _Last updated: 2026-09-28 22:04 (America/Toronto)_

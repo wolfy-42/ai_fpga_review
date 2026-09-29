@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: MIT -->
+`SPDX-License-Identifier: MIT`
+
 # Project Rules: fpga review
 
 These are the rules for running this project, as set by D. Every new rule gets added to this numbered list. Follow all of them in every session.

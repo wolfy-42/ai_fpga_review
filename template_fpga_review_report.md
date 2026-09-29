@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: MIT -->
+`SPDX-License-Identifier: MIT`
+
 # FPGA Design Review Report: template
 
 This template holds the main sections and subsections of the review, with a short description of the intent of each section and each line. How to carry out the review is in `claude/rules.md`, Appendix R. The numbering here is exactly the same as in Appendix R.

@@ -17,9 +17,9 @@ These are the rules for running this project, as set by D. Every new rule gets a
 
 **3.2** **Keep at most 3 backups per file.** Each original file can have up to 3 backup files. When a new backup would make 4, delete the oldest one.
 
-**4.** **Review-section rules go in Appendix R.** Rules for reviewing a specific section of a review go in Appendix R, numbered to match the review: R.N covers review section R.N, and R.N.M covers subsection R.N.M (and so on for deeper levels). When reviewing a section, apply every rule under its R.N entry, including those in its subsections.
+**4.** **Review-section rules go in Appendix RVU Rules.** Rules for reviewing a specific section of a review go in Appendix RVU Rules, numbered to match the review: RVU.N covers review section RVU.N, and RVU.N.M covers subsection RVU.N.M (and so on for deeper levels). When reviewing a section, apply every rule under its RVU.N entry, including those in its subsections.
 
-**5.** **Hierarchical numbering.** Everything in the project is numbered hierarchically: 1., 1.1, 1.1.1 and so on, going as deep as needed. This covers rules, review sections, appendix entries and any other numbered lists. Appendices use the same scheme with a letter prefix: R.1, R.1.1, R.1.1.1.
+**5.** **Hierarchical numbering.** Everything in the project is numbered hierarchically: 1., 1.1, 1.1.1 and so on, going as deep as needed. This covers rules, review sections, appendix entries and any other numbered lists. Appendix RVU Rules and the review sections use the same scheme with the prefix `RVU`: RVU.1, RVU.1.1, RVU.1.1.1.
 
 **6.** **Track open items in `review_open_items.md`.** Store every open item, conflict and piece of missing information in `claude/review_open_items.md` as a numbered list.
 
@@ -27,54 +27,220 @@ These are the rules for running this project, as set by D. Every new rule gets a
 
 **7.** **Never assume, never fill in content.** Use only information D has given. Don't generate, infer or fill in content from general knowledge or assumptions. If something needed is missing or unclear, leave it empty and log it as an open item under rule 6.
 
-**8.** **Run the review in Appendix R order, one line at a time.** Run the review following the sequence of the sections and subpoints in Appendix R.
+**8.** **Run the review in Appendix RVU Rules order, one line at a time.** Run the review following the sequence of the sections and subpoints in Appendix RVU Rules.
 
-**8.1** Every line in Appendix R is a separate execution of the rule written on that line.
+**8.1** Every line in Appendix RVU Rules is a separate execution of the rule written on that line.
 
 **8.2** Capture the result of each execution in `fpga_review_report.md`, in the matching section or subpoint.
 
 **8.3** `fpga_review_report.md` starts as a copy of `template_fpga_review_report.md`, which gives it its original structure.
 
-**9.** **The template mirrors Appendix R.** `template_fpga_review_report.md` is a copy of the sections in Appendix R, with exactly the same numbering (R.0, R.1, R.1.1 …). Any discrepancy between the two is flagged as a conflict in `review_open_items.md` (rule 6).
+**9.** **The template mirrors Appendix RVU Rules.** `template_fpga_review_report.md` is a copy of the sections in Appendix RVU Rules, with exactly the same numbering (RVU.0, RVU.1, RVU.1.1 …). Any discrepancy between the two is flagged as a conflict in `review_open_items.md` (rule 6).
 
 **10.** **"help" / "menu" command.** When D types `help` or `menu`, list the example command prompts below.
 
 **10.1** `execute review`: runs the full review (rule 8).
 
-**10.2** `execute review of section R.3`: runs the review of section R.3 only. Any section number can be used, for example R.N or R.N.M.
+**10.2** `execute review of section RVU.3`: runs the review of section RVU.3 only. Any section number can be used, for example RVU.N or RVU.N.M.
+
+**11.** **Review results table.** In the review results document (`fpga_review_report.md`), every reviewed item is recorded as a row of a table with these columns:
+
+**11.1** **Column 1, Item number:** the item's RVU number (for example RVU.1.1).
+
+**11.2** **Column 2, Description:** the description of the item being reviewed, the steps to carry out its review, and the grading definition.
+
+**11.3** **Column 3, Result:** the result after executing the review steps, including the grading level, which is one of: `not-applicable`, `compliant`, `minor non-compliant`, `major non-compliant`.
+
+**11.4** **Column 4, Correction:** whether the item has to be corrected or will be left uncorrected.
+
+**11.5** **Column 5, Days to correct:** how many days it will take to correct the item.
+
+**11.6** **Column 6, Issue description:** the description of the issue discovered.
 
 ---
 
-## Appendix R: Review-section rules
+## Appendix RVU Rules
 
-Rules for reviewing each section of the review, numbered to match it: R.N covers review section R.N, and R.N.M covers subsection R.N.M.
+Rules for reviewing each section of the review, numbered to match it: RVU.N covers review section RVU.N, and RVU.N.M covers subsection RVU.N.M.
 
-### R.0 Review Scores
+### RVU.0 Review Scores
+Execute RVU.0 last, after all the other review sections (RVU.1–RVU.8) are completed, even though it comes first in Appendix RVU Rules order (this overrides rule 8 for RVU.0 only).
+
+Populate RVU.0 as a table with one row per major review section (RVU.1, RVU.2, … RVU.8) and these 5 columns:
+- Column 1, Section ID: the major section's RVU number (for example RVU.1).
+- Column 2, Section title: the title of that section (for example Pre-requisites).
+- Column 3, % compliant: the percentage of the section's total items graded `compliant`.
+- Column 4, % minor non-compliant: the percentage of the section's total items graded `minor non-compliant`.
+- Column 5, % major non-compliant: the percentage of the section's total items graded `major non-compliant`.
+
+### RVU.1 Pre-requisites
+
+#### RVU.1.1 Requirements Document
+Check: has a requirements document been used, structured as short one-line requirements, each with a unique ID?
+- Requirements document with short one-line requirements and unique requirement IDs used: `compliant`.
+- A document with another structure used for the requirements (for example an architecture document): `minor non-compliant`.
+- Neither of the above used: `major non-compliant`.
+
+#### RVU.1.2 FPGA Project Creation TCL Scripts
+Check: have FPGA project creation TCL scripts been used?
+- TCL scripts used: `compliant`.
+- Scripts other than TCL used: `minor non-compliant`.
+- No project creation scripts used: `major non-compliant`.
+
+#### RVU.1.3 Simulation with SIMU
+Check: has simulation been performed with SIMU?
+- SIMU used: `compliant`.
+- Simulation performed with other scripts and methodology: `minor non-compliant`.
+- No simulation performed: `major non-compliant`.
+
+#### RVU.1.4 Simulation/Verification Test Plan and Report
+Check: have a simulation/verification test plan and a simulation/verification test report been used?
+- Simulation/verification test plan and test report used: `compliant`.
+- Only a simulation/verification test report made, without a test plan: `minor non-compliant`.
+- No simulation/verification test plan and no test report: `major non-compliant`.
+
+#### RVU.1.5 Validation Lab Test Plan and Report
+Check: have a validation lab test plan and a validation lab test report been used?
+- Validation lab test plan and test report used: `compliant`.
+- Only a validation lab test report made, without a test plan: `minor non-compliant`.
+- No validation lab test plan and no test report: `major non-compliant`.
+
+#### RVU.1.6 Lab Testing Automation Python Scripts
+Check: have lab testing automation Python scripts been used?
+- Python lab testing scripts used: `compliant`.
+- Non-Python lab testing scripts used: `minor non-compliant`.
+- No scripting used for lab testing: `major non-compliant`.
+
+#### RVU.1.7 Compliance Matrix
+Check: is there a compliance matrix document that links the verification test cases and the validation test cases to the requirement IDs, and shows which requirements are not covered?
+- Compliance matrix links both verification and validation test cases to requirement IDs and shows the requirements not covered: `compliant`.
+- Compliance matrix exists but is incomplete: `minor non-compliant`.
+- No compliance matrix: `major non-compliant`.
+
+### RVU.2 Documentation
 _No rules yet._
 
-### R.1 Pre-requisites
-_No rules yet._
+#### RVU.2.1 Project Lead (PL) Documentation
+One check per PL document below. Grading for these checks has not been provided yet (open item 16).
 
-### R.2 TPL Documentation
-_No rules yet._
+##### RVU.2.1.1 Checklist Document
+Check: is there a checklist document listing all deliverables for the project?
 
-### R.3 Architecture Documentation
-_No rules yet._
+##### RVU.2.1.2 Requirements Document
+Check: is there a requirements document listing the requirements, each under a unique ID with a couple of lines of description?
 
-### R.4 RTL Review
-_No rules yet._
+##### RVU.2.1.3 Risk Assessment
+Check: is there a risk assessment containing:
+- a feasibility assessment, with risk assessment and mitigation strategies;
+- two risk graphs of risk severity (low / medium / high) vs. risk probability (low / medium / high): one before mitigation, and one after mitigation is implemented.
 
-### R.5 3rd Party Synthesis
-_No rules yet._
+##### RVU.2.1.4 Task List Document
+Check: is there a task list document with effort estimates per task?
 
-### R.6 Simulation-Verification
-_No rules yet._
+##### RVU.2.1.5 Change Log Document
+Check: is there a change log document, maintained throughout project execution, logging all changes against the initial requirements together with their effort impact (positive or negative)?
 
-### R.7 PaR and STA
-_No rules yet._
+#### RVU.2.2 Architecture Documentation
+One check per architecture document below. Grading for these checks has not been provided yet (open item 16).
 
-### R.8 Lab Debug-Integration-Validation
-_No rules yet._
+##### RVU.2.2.1 Main Block Diagram
+Check: is there a main block diagram?
 
-### R.9 Deliverables
-_No rules yet._
+##### RVU.2.2.2 Architecture Document
+Check: is there an architecture document?
+
+##### RVU.2.2.3 Third-Party IP List
+Check: is there a list of the third-party IP used?
+
+##### RVU.2.2.4 Logic Size/Resources/Pins Estimation and FPGA Device Selection
+Check: is there a logic size, resources and pins estimation with the FPGA device selection?
+
+#### RVU.2.3 Project Documentation
+One check per project document below. Grading for these checks has not been provided yet (open item 16).
+
+##### RVU.2.3.1 Verification Plan for Simulation
+Check: has a verification plan for simulation been created?
+
+##### RVU.2.3.2 Validation Test Plan for Lab Testing
+Check: has a validation test plan document for lab testing been created?
+
+### RVU.3 RTL Review
+
+#### RVU.3.1 Clock Distribution
+Check the clock distribution: are any PLLs/DLLs chained (one PLL/DLL output feeding another PLL/DLL input)?
+- PLLs/DLLs chained: `major non-compliant`. This requires an additional check that the chaining does not create excessive jitter outside the allowed input range of the downstream PLL/DLL.
+- Grading when no PLLs/DLLs are chained has not been provided yet (open item 19).
+
+#### RVU.3.2 Reset Generation and Distribution
+Check the reset generation and distribution: is the initial reset deassertion driven by a proper reset generation IP or by a PLL/DLL lock signal?
+- Initial reset deassertion uses a proper reset generation IP or a PLL/DLL lock signal: `compliant`.
+- Grading for other cases has not been provided yet (open item 20).
+
+#### RVU.3.3 CDC/RDC
+Check the clock domain crossings (CDC) and reset domain crossings (RDC): are they implemented with the vendor-provided IP or a pre-existing library?
+- CDC/RDC uses the vendor-provided IP or a pre-existing library: `compliant`.
+- CDC/RDC does not use a library: `major non-compliant`.
+
+#### RVU.3.4 FSM Usage
+Check the written RTL: is the control logic implemented with FSMs (finite state machines)?
+- RTL uses FSMs: `compliant`.
+- RTL does not use FSMs: `major non-compliant`.
+- Exception: a simple flip-flop pipeline does not need an FSM. The grade for this exception has not been provided yet (open item 21).
+
+#### RVU.3.5 Control Plane with SystemRDL
+Check the control plane (registers): is it defined with SystemRDL?
+- Control plane uses SystemRDL: `compliant`.
+- Control plane does not use SystemRDL: `major non-compliant`.
+
+### RVU.4 3rd Party Synthesis
+
+#### RVU.4.1 MATLAB to HDL Generation
+Check designs that use MATLAB: is the HDL generated directly from MATLAB, using Simulink with HDL Coder, System Generator (SysGen) or a similar tool, and are both the MATLAB/Simulink code and the generated HDL code available?
+- MATLAB used together with Simulink and HDL Coder, SysGen or a similar tool to generate the HDL, and both the MATLAB/Simulink code and the generated HDL code are available: `compliant`.
+- The MATLAB/Simulink code or the generated HDL code is missing: `major non-compliant`.
+- MATLAB code does not generate HDL directly and the RTL was coded manually: `major non-compliant`.
+- Grading when the design does not use MATLAB has not been provided yet (open item 25).
+
+#### RVU.4.2 HLS Flow
+Check designs that use HLS (high-level synthesis): are there simulation test cases in C, and are the build scripts in TCL or Python?
+- HLS used, with simulation test cases in C and build scripts in TCL or Python: `compliant`.
+- Anything missing: `major non-compliant`.
+
+### RVU.5 Simulation-Verification
+
+#### RVU.5.1 Simulation Methodology
+Check the simulation methodology: is SIMU, or a methodology close to SSVE, used?
+- SIMU or a methodology close to SSVE used: `compliant`.
+- No methodology like SSVE or UVM used: `major non-compliant`.
+- Grading when UVM or another established methodology (not SSVE-like) is used has not been provided yet (open item 23).
+
+#### RVU.5.2 SSVE AI Project Check of the Simulation Environment
+Run the SSVE AI project to check whether the simulation environment is compliant.
+- No discrepancies, or only minor discrepancies found: `compliant`.
+- Any other result: `major non-compliant`.
+
+### RVU.6 PaR and STA
+
+#### RVU.6.1 Constraints Files Organization
+Check the constraints files: are they separated by type of constraint?
+- Constraints files separated by type of constraint: `compliant`.
+- One file with all the constraints, or a few files that are not organized: `minor non-compliant`.
+
+#### RVU.6.2 I/O Timing Constraints for Clocked Pins
+Check the clocked signals exposed on device pins: are they constrained with input setup/hold constraints (inputs) and output "after" constraints (outputs)?
+- Clocked signals on device pins have input setup/hold and output "after" constraints: `compliant`.
+- Clocked signals on device pins are missing these constraints: `major non-compliant`.
+
+### RVU.7 Lab Debug-Integration-Validation
+
+#### RVU.7.1 Python Functional Checks Against Requirement IDs
+Check the validation: is Python scripting used to check the functionality against the requirement IDs?
+- Python scripting checks the functionality against the requirement IDs: `compliant`.
+- Otherwise: `major non-compliant`.
+
+### RVU.8 Deliverables
+
+#### RVU.8.1 Checklist Items in Project Output Products
+Check the project output products against the checklist document (RVU.2.1.1): are all items from the checklist available?
+- All checklist items are available in the project output products: `compliant`.
+- Otherwise: `major non-compliant`.

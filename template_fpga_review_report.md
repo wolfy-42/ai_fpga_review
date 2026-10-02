@@ -3,36 +3,135 @@
 
 # FPGA Design Review Report: template
 
-This template holds the main sections and subsections of the review, with a short description of the intent of each section and each line. How to carry out the review is in `claude/rules.md`, Appendix R. The numbering here is exactly the same as in Appendix R.
+This template holds the main sections and subsections of the review, with a short description of the intent of each section and each line. How to carry out the review is in `claude/rules.md`, Appendix RVU Rules. The numbering here is exactly the same as in Appendix RVU Rules.
 
 ---
 
-## R.0 Review Scores
+## RVU.0 Review Scores
+_Intent: the review scores are calculated after all the review sections are completed. The calculated scores are then filled in this section._
+
+## RVU.1 Pre-requisites
 _Intent: not provided yet._
 
-## R.1 Pre-requisites
+### RVU.1.1 Requirements Document
+_Intent: check whether a requirements document with short one-line requirements, each with a unique ID, has been used._
+
+### RVU.1.2 FPGA Project Creation TCL Scripts
+_Intent: check whether FPGA project creation TCL scripts have been used._
+
+### RVU.1.3 Simulation with SIMU
+_Intent: check whether simulation has been performed with SIMU._
+
+### RVU.1.4 Simulation/Verification Test Plan and Report
+_Intent: check whether a simulation/verification test plan and a simulation/verification test report have been used._
+
+### RVU.1.5 Validation Lab Test Plan and Report
+_Intent: check whether a validation lab test plan and a validation lab test report have been used._
+
+### RVU.1.6 Lab Testing Automation Python Scripts
+_Intent: check whether lab testing automation Python scripts have been used._
+
+### RVU.1.7 Compliance Matrix
+_Intent: check for a compliance matrix linking verification and validation test cases to requirement IDs and showing the requirements not covered._
+
+## RVU.2 Documentation
 _Intent: not provided yet._
 
-## R.2 TPL Documentation
+### RVU.2.1 Project Lead (PL) Documentation
+_Intent: check that each required PL document exists with the required content._
+
+#### RVU.2.1.1 Checklist Document
+_Intent: check for a checklist document listing all deliverables for the project._
+
+#### RVU.2.1.2 Requirements Document
+_Intent: check for a requirements document listing the requirements, each under a unique ID with a couple of lines of description._
+
+#### RVU.2.1.3 Risk Assessment
+_Intent: check for a feasibility and risk assessment with mitigation strategies and two severity vs. probability risk graphs (before and after mitigation)._
+
+#### RVU.2.1.4 Task List Document
+_Intent: check for a task list document with effort estimates per task._
+
+#### RVU.2.1.5 Change Log Document
+_Intent: check for a change log, maintained throughout the project, of all changes against the initial requirements with their effort impact._
+
+### RVU.2.2 Architecture Documentation
+_Intent: check that each required architecture document exists._
+
+#### RVU.2.2.1 Main Block Diagram
+_Intent: check for a main block diagram._
+
+#### RVU.2.2.2 Architecture Document
+_Intent: check for an architecture document._
+
+#### RVU.2.2.3 Third-Party IP List
+_Intent: check for a list of the third-party IP used._
+
+#### RVU.2.2.4 Logic Size/Resources/Pins Estimation and FPGA Device Selection
+_Intent: check for a logic size, resources and pins estimation with the FPGA device selection._
+
+### RVU.2.3 Project Documentation
+_Intent: check that each required project document has been created._
+
+#### RVU.2.3.1 Verification Plan for Simulation
+_Intent: check that a verification plan for simulation has been created._
+
+#### RVU.2.3.2 Validation Test Plan for Lab Testing
+_Intent: check that a validation test plan document for lab testing has been created._
+
+## RVU.3 RTL Review
 _Intent: not provided yet._
 
-## R.3 Architecture Documentation
+### RVU.3.1 Clock Distribution
+_Intent: check the clock distribution for chained PLLs/DLLs and, if chained, that the resulting jitter stays within the downstream PLL/DLL allowed input range._
+
+### RVU.3.2 Reset Generation and Distribution
+_Intent: check that the initial reset deassertion uses a proper reset generation IP or a PLL/DLL lock signal._
+
+### RVU.3.3 CDC/RDC
+_Intent: check that clock and reset domain crossings use the vendor-provided IP or a pre-existing library._
+
+### RVU.3.4 FSM Usage
+_Intent: check that the written RTL uses FSMs (simple flip-flop pipelines excepted)._
+
+### RVU.3.5 Control Plane with SystemRDL
+_Intent: check that the control plane is defined with SystemRDL._
+
+## RVU.4 3rd Party Synthesis
 _Intent: not provided yet._
 
-## R.4 RTL Review
+### RVU.4.1 MATLAB to HDL Generation
+_Intent: check that MATLAB designs generate HDL directly with Simulink and HDL Coder, SysGen or a similar tool (rather than manually coded RTL), and that both the MATLAB/Simulink code and the generated HDL code are available._
+
+### RVU.4.2 HLS Flow
+_Intent: check that HLS designs have simulation test cases in C and build scripts in TCL or Python._
+
+## RVU.5 Simulation-Verification
 _Intent: not provided yet._
 
-## R.5 3rd Party Synthesis
+### RVU.5.1 Simulation Methodology
+_Intent: check that simulation uses SIMU or a methodology close to SSVE._
+
+### RVU.5.2 SSVE AI Project Check of the Simulation Environment
+_Intent: run the SSVE AI project to check whether the simulation environment is compliant._
+
+## RVU.6 PaR and STA
 _Intent: not provided yet._
 
-## R.6 Simulation-Verification
+### RVU.6.1 Constraints Files Organization
+_Intent: check that the constraints files are separated by type of constraint._
+
+### RVU.6.2 I/O Timing Constraints for Clocked Pins
+_Intent: check that clocked signals on device pins have input setup/hold and output "after" constraints._
+
+## RVU.7 Lab Debug-Integration-Validation
 _Intent: not provided yet._
 
-## R.7 PaR and STA
+### RVU.7.1 Python Functional Checks Against Requirement IDs
+_Intent: check that Python scripting is used to check the functionality against the requirement IDs._
+
+## RVU.8 Deliverables
 _Intent: not provided yet._
 
-## R.8 Lab Debug-Integration-Validation
-_Intent: not provided yet._
-
-## R.9 Deliverables
-_Intent: not provided yet._
+### RVU.8.1 Checklist Items in Project Output Products
+_Intent: check that all items from the checklist document are available in the project output products._

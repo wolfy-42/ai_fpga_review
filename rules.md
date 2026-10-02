@@ -35,6 +35,8 @@ These are the rules for running this project, as set by D. Every new rule gets a
 
 **8.3** `fpga_review_report.md` starts as a copy of `template_fpga_review_report.md`, which gives it its original structure.
 
+**8.4** Each review report is stored in the project at `claude/reviews/fpga_review_report_<design>_<YYYY-MM-DD>.md`, where `<design>` is the reviewed design's name and the date is the review date (America/Toronto).
+
 **9.** **The template mirrors Appendix RVU Rules.** `template_fpga_review_report.md` is a copy of the sections in Appendix RVU Rules, with exactly the same numbering (RVU.0, RVU.1, RVU.1.1 â€¦). Any discrepancy between the two is flagged as a conflict in `review_open_items.md` (rule 6).
 
 **10.** **"help" / "menu" command.** When D types `help` or `menu`, list the example command prompts below.
@@ -57,6 +59,10 @@ These are the rules for running this project, as set by D. Every new rule gets a
 
 **11.6** **Column 6, Issue description:** the description of the issue discovered.
 
+**11.7** `template_fpga_review_report.md` already contains this table, with the column headers and one empty row per RVU item, so each new report starts with it ready to fill in.
+
+**12.** **Always produce the review report as Markdown and Excel.** Every time the review report is generated or updated, produce it in two formats at the same time: `fpga_review_report_<design>_<YYYY-MM-DD>.md` and `fpga_review_report_<design>_<YYYY-MM-DD>.xlsx`, with the same content (rule 8.4 for the name and location, rule 11 for the results table).
+
 ---
 
 ## Appendix RVU Rules
@@ -73,11 +79,13 @@ Populate RVU.0 as a table with one row per major review section (RVU.1, RVU.2, â
 - Column 4, % minor non-compliant: the percentage of the section's total items graded `minor non-compliant`.
 - Column 5, % major non-compliant: the percentage of the section's total items graded `major non-compliant`.
 
+Items graded `not-applicable` are excluded from a section's total items, so the three percentages add up to 100%.
+
 ### RVU.1 Pre-requisites
 
 #### RVU.1.1 Requirements Document
-Check: has a requirements document been used, structured as short one-line requirements, each with a unique ID?
-- Requirements document with short one-line requirements and unique requirement IDs used: `compliant`.
+Check: has a requirements document been used, with each requirement under a unique ID and one or two lines long?
+- Requirements document with unique requirement IDs and requirements one or two lines long used: `compliant`.
 - A document with another structure used for the requirements (for example an architecture document): `minor non-compliant`.
 - Neither of the above used: `major non-compliant`.
 
@@ -97,12 +105,14 @@ Check: has simulation been performed with SIMU?
 Check: have a simulation/verification test plan and a simulation/verification test report been used?
 - Simulation/verification test plan and test report used: `compliant`.
 - Only a simulation/verification test report made, without a test plan: `minor non-compliant`.
+- Only a simulation/verification test plan made, without a test report: `minor non-compliant`.
 - No simulation/verification test plan and no test report: `major non-compliant`.
 
 #### RVU.1.5 Validation Lab Test Plan and Report
 Check: have a validation lab test plan and a validation lab test report been used?
 - Validation lab test plan and test report used: `compliant`.
 - Only a validation lab test report made, without a test plan: `minor non-compliant`.
+- Only a validation lab test plan made, without a test report: `minor non-compliant`.
 - No validation lab test plan and no test report: `major non-compliant`.
 
 #### RVU.1.6 Lab Testing Automation Python Scripts
@@ -121,13 +131,13 @@ Check: is there a compliance matrix document that links the verification test ca
 _No rules yet._
 
 #### RVU.2.1 Project Lead (PL) Documentation
-One check per PL document below. Grading for these checks has not been provided yet (open item 16).
+One check per PL document below. Grading for each check: document present and complete = `compliant`; present but incomplete = `minor non-compliant`; missing = `major non-compliant`.
 
 ##### RVU.2.1.1 Checklist Document
 Check: is there a checklist document listing all deliverables for the project?
 
 ##### RVU.2.1.2 Requirements Document
-Check: is there a requirements document listing the requirements, each under a unique ID with a couple of lines of description?
+Check: is there a requirements document listing the requirements, each under a unique ID and one or two lines long?
 
 ##### RVU.2.1.3 Risk Assessment
 Check: is there a risk assessment containing:
@@ -141,7 +151,7 @@ Check: is there a task list document with effort estimates per task?
 Check: is there a change log document, maintained throughout project execution, logging all changes against the initial requirements together with their effort impact (positive or negative)?
 
 #### RVU.2.2 Architecture Documentation
-One check per architecture document below. Grading for these checks has not been provided yet (open item 16).
+One check per architecture document below. Grading for each check: document present and complete = `compliant`; present but incomplete = `minor non-compliant`; missing = `major non-compliant`.
 
 ##### RVU.2.2.1 Main Block Diagram
 Check: is there a main block diagram?
@@ -156,7 +166,7 @@ Check: is there a list of the third-party IP used?
 Check: is there a logic size, resources and pins estimation with the FPGA device selection?
 
 #### RVU.2.3 Project Documentation
-One check per project document below. Grading for these checks has not been provided yet (open item 16).
+One check per project document below. Grading for each check: document present and complete = `compliant`; present but incomplete = `minor non-compliant`; missing = `major non-compliant`.
 
 ##### RVU.2.3.1 Verification Plan for Simulation
 Check: has a verification plan for simulation been created?
@@ -166,28 +176,36 @@ Check: has a validation test plan document for lab testing been created?
 
 ### RVU.3 RTL Review
 
-#### RVU.3.1 Clock Distribution
-Check the clock distribution: are any PLLs/DLLs chained (one PLL/DLL output feeding another PLL/DLL input)?
-- PLLs/DLLs chained: `major non-compliant`. This requires an additional check that the chaining does not create excessive jitter outside the allowed input range of the downstream PLL/DLL.
-- Grading when no PLLs/DLLs are chained has not been provided yet (open item 19).
+#### RVU.3.1 Coding Guidelines
+Check the RTL code: does it follow the coding guidelines?
+- Coding guidelines followed: `compliant`.
+- Coding guidelines not followed: `major non-compliant`.
+- Third-party coding rules took precedence over the coding guidelines: `not-applicable`.
 
-#### RVU.3.2 Reset Generation and Distribution
+#### RVU.3.2 Clock Distribution
+Check the clock distribution: are any PLLs/DLLs chained (one PLL/DLL output feeding another PLL/DLL input)?
+- No PLLs/DLLs chained: `compliant`.
+- PLLs/DLLs chained: run an additional check that the chaining does not create excessive jitter outside the allowed input range of the downstream PLL/DLL.
+  - Chained, and the jitter is within the allowed input range: `minor non-compliant`.
+  - Chained, and the jitter is outside the allowed input range: `major non-compliant`.
+
+#### RVU.3.3 Reset Generation and Distribution
 Check the reset generation and distribution: is the initial reset deassertion driven by a proper reset generation IP or by a PLL/DLL lock signal?
 - Initial reset deassertion uses a proper reset generation IP or a PLL/DLL lock signal: `compliant`.
-- Grading for other cases has not been provided yet (open item 20).
+- Initial reset deassertion does not use a proper reset generation IP or a PLL/DLL lock signal: `minor non-compliant`.
 
-#### RVU.3.3 CDC/RDC
+#### RVU.3.4 CDC/RDC
 Check the clock domain crossings (CDC) and reset domain crossings (RDC): are they implemented with the vendor-provided IP or a pre-existing library?
 - CDC/RDC uses the vendor-provided IP or a pre-existing library: `compliant`.
 - CDC/RDC does not use a library: `major non-compliant`.
 
-#### RVU.3.4 FSM Usage
+#### RVU.3.5 FSM Usage
 Check the written RTL: is the control logic implemented with FSMs (finite state machines)?
 - RTL uses FSMs: `compliant`.
 - RTL does not use FSMs: `major non-compliant`.
-- Exception: a simple flip-flop pipeline does not need an FSM. The grade for this exception has not been provided yet (open item 21).
+- Exception: a simple flip-flop pipeline without an FSM: `compliant`.
 
-#### RVU.3.5 Control Plane with SystemRDL
+#### RVU.3.6 Control Plane with SystemRDL
 Check the control plane (registers): is it defined with SystemRDL?
 - Control plane uses SystemRDL: `compliant`.
 - Control plane does not use SystemRDL: `major non-compliant`.
@@ -199,22 +217,30 @@ Check designs that use MATLAB: is the HDL generated directly from MATLAB, using 
 - MATLAB used together with Simulink and HDL Coder, SysGen or a similar tool to generate the HDL, and both the MATLAB/Simulink code and the generated HDL code are available: `compliant`.
 - The MATLAB/Simulink code or the generated HDL code is missing: `major non-compliant`.
 - MATLAB code does not generate HDL directly and the RTL was coded manually: `major non-compliant`.
-- Grading when the design does not use MATLAB has not been provided yet (open item 25).
+- Any other tool that generates HDL directly from MATLAB counts as "similar".
+- Design does not use MATLAB: `not-applicable`.
 
 #### RVU.4.2 HLS Flow
 Check designs that use HLS (high-level synthesis): are there simulation test cases in C, and are the build scripts in TCL or Python?
 - HLS used, with simulation test cases in C and build scripts in TCL or Python: `compliant`.
 - Anything missing: `major non-compliant`.
+- Design does not use HLS: `not-applicable`.
 
 ### RVU.5 Simulation-Verification
 
-#### RVU.5.1 Simulation Methodology
+#### RVU.5.1 Coding Guidelines
+Check the verification (simulation) code: does it follow the coding guidelines?
+- Coding guidelines followed: `compliant`.
+- Coding guidelines not followed: `major non-compliant`.
+- Third-party coding rules took precedence over the coding guidelines: `not-applicable`.
+
+#### RVU.5.2 Simulation Methodology
 Check the simulation methodology: is SIMU, or a methodology close to SSVE, used?
 - SIMU or a methodology close to SSVE used: `compliant`.
 - No methodology like SSVE or UVM used: `major non-compliant`.
-- Grading when UVM or another established methodology (not SSVE-like) is used has not been provided yet (open item 23).
+- UVM used: `minor non-compliant`.
 
-#### RVU.5.2 SSVE AI Project Check of the Simulation Environment
+#### RVU.5.3 SSVE AI Project Check of the Simulation Environment
 Run the SSVE AI project to check whether the simulation environment is compliant.
 - No discrepancies, or only minor discrepancies found: `compliant`.
 - Any other result: `major non-compliant`.
@@ -225,6 +251,7 @@ Run the SSVE AI project to check whether the simulation environment is compliant
 Check the constraints files: are they separated by type of constraint?
 - Constraints files separated by type of constraint: `compliant`.
 - One file with all the constraints, or a few files that are not organized: `minor non-compliant`.
+- No constraints files: `major non-compliant`.
 
 #### RVU.6.2 I/O Timing Constraints for Clocked Pins
 Check the clocked signals exposed on device pins: are they constrained with input setup/hold constraints (inputs) and output "after" constraints (outputs)?
@@ -233,7 +260,13 @@ Check the clocked signals exposed on device pins: are they constrained with inpu
 
 ### RVU.7 Lab Debug-Integration-Validation
 
-#### RVU.7.1 Python Functional Checks Against Requirement IDs
+#### RVU.7.1 Coding Guidelines
+Check the validation (lab test) code: does it follow the coding guidelines?
+- Coding guidelines followed: `compliant`.
+- Coding guidelines not followed: `major non-compliant`.
+- Third-party coding rules took precedence over the coding guidelines: `not-applicable`.
+
+#### RVU.7.2 Python Functional Checks Against Requirement IDs
 Check the validation: is Python scripting used to check the functionality against the requirement IDs?
 - Python scripting checks the functionality against the requirement IDs: `compliant`.
 - Otherwise: `major non-compliant`.

@@ -21,11 +21,11 @@ These are the rules for running this project, as set by D. Every new rule gets a
 
 **5.** **Hierarchical numbering.** Everything in the project is numbered hierarchically: 1., 1.1, 1.1.1 and so on, going as deep as needed. This covers rules, review sections, appendix entries and any other numbered lists. Appendix RVU Rules and the review sections use the same scheme with the prefix `RVU`: RVU.1, RVU.1.1, RVU.1.1.1.
 
-**6.** **Track open items in `review_open_items.md`.** Store every open item, conflict and piece of missing information in `claude/review_open_items.md` as a numbered list.
+**6.** **Track review open items in `review_open_items.md`.** Store every open item, conflict and piece of missing information about the design or project under review in `claude/review_open_items.md` as a numbered list. Open items about the rules themselves go in `claude/rules_conflicts.md` (rule 13).
 
-**6.1** **Open-item numbers only go up and are never reused.** Number open items in sequence, always taking the next number after the highest one ever used. When an item is closed, remove it from the list, but never give its number to another item.
+**6.1** **ROI numbering, per project under review.** Number review open items ROI.1, ROI.2, ROI.3 … and their sub-items ROI.1.1, ROI.1.2 … (rule 5). Each project (design) under review has its own ROI sequence, starting at ROI.1, kept under its own heading in `review_open_items.md` with its own "highest number used" line. Within a project, always take the next number after the highest one ever used for that project; when an item is closed, remove it from the list, but never give its number to another item of that project. Items not tied to a specific project go under the "General" heading, which has its own sequence.
 
-**7.** **Never assume, never fill in content.** Use only information D has given. Don't generate, infer or fill in content from general knowledge or assumptions. If something needed is missing or unclear, leave it empty and log it as an open item under rule 6.
+**7.** **Never assume, never fill in content.** Use only information D has given. Don't generate, infer or fill in content from general knowledge or assumptions. If something needed is missing or unclear, leave it empty and log it as an open item: under rule 13 if it is about the rules or the template, under rule 6 if it is about the design under review.
 
 **8.** **Run the review in Appendix RVU Rules order, one line at a time.** Run the review following the sequence of the sections and subpoints in Appendix RVU Rules.
 
@@ -37,7 +37,7 @@ These are the rules for running this project, as set by D. Every new rule gets a
 
 **8.4** Each review report is stored in the project at `claude/reviews/fpga_review_report_<design>_<YYYY-MM-DD>.md`, where `<design>` is the reviewed design's name and the date is the review date (America/Toronto).
 
-**9.** **The template mirrors Appendix RVU Rules.** `template_fpga_review_report.md` is a copy of the sections in Appendix RVU Rules, with exactly the same numbering (RVU.0, RVU.1, RVU.1.1 …). Any discrepancy between the two is flagged as a conflict in `review_open_items.md` (rule 6).
+**9.** **The template mirrors Appendix RVU Rules.** `template_fpga_review_report.md` is a copy of the sections in Appendix RVU Rules, with exactly the same numbering (RVU.0, RVU.1, RVU.1.1 …). Any discrepancy between the two is flagged as a conflict in `rules_conflicts.md` (rule 13).
 
 **10.** **"help" / "menu" command.** When D types `help` or `menu`, list the example command prompts below.
 
@@ -57,11 +57,17 @@ These are the rules for running this project, as set by D. Every new rule gets a
 
 **11.5** **Column 5, Days to correct:** how many days it will take to correct the item.
 
+**11.5.1** When running the review, ask D (the interviewer) to enter columns 4 and 5 for each item; don't fill them in without D's input.
+
 **11.6** **Column 6, Issue description:** the description of the issue discovered.
 
-**11.7** `template_fpga_review_report.md` already contains this table, with the column headers and one empty row per RVU item, so each new report starts with it ready to fill in.
+**11.7** `template_fpga_review_report.md` already contains this table, with the column headers and one row per RVU item, so each new report starts with it ready to fill in. Column 2 (Description) is pre-filled from Appendix RVU Rules (the check, its scope and its grading); the review fills columns 3–6.
 
-**12.** **Always produce the review report as Markdown and Excel.** Every time the review report is generated or updated, produce it in two formats at the same time: `fpga_review_report_<design>_<YYYY-MM-DD>.md` and `fpga_review_report_<design>_<YYYY-MM-DD>.xlsx`, with the same content (rule 8.4 for the name and location, rule 11 for the results table).
+**12.** **Always produce the review report as Markdown and Excel.** Every time the review report is generated or updated, produce it in two formats at the same time: `fpga_review_report_<design>_<YYYY-MM-DD>.md` and `fpga_review_report_<design>_<YYYY-MM-DD>.xlsx`, with the same content (rule 8.4 for the name, rule 11 for the results table). Both files are saved in a `reviews/` folder in the Mac git repo (`~/writing/github_wolfy-42_simu-documentation/ai_fpga_review/reviews/`); the `.md` is also saved in the project (rule 8.4).
+
+**13.** **Track rule conflicts and open items in `rules_conflicts.md`.** Store every conflict, piece of missing information and open item about the project rules (`rules.md`, including Appendix RVU Rules, and `template_fpga_review_report.md`) in `claude/rules_conflicts.md`.
+
+**13.1** **OI numbering.** Number these items OI.1, OI.2, OI.3 … and their sub-items OI.1.1, OI.1.2 … (rule 5). Always take the next number after the highest one ever used; never reuse a number. When an item is closed, remove it from the list.
 
 ---
 
@@ -79,11 +85,12 @@ Populate RVU.0 as a table with one row per major review section (RVU.1, RVU.2, �
 - Column 4, % minor non-compliant: the percentage of the section's total items graded `minor non-compliant`.
 - Column 5, % major non-compliant: the percentage of the section's total items graded `major non-compliant`.
 
-Items graded `not-applicable` are excluded from a section's total items, so the three percentages add up to 100%.
+Items graded `not-applicable` are excluded from a section's total items, so the three percentages add up to 100%. If every item in a section is `not-applicable`, keep the row and show `N/A` in columns 3–5.
 
 ### RVU.1 Pre-requisites
 
 #### RVU.1.1 Requirements Document
+Scope: checks that a requirements document is used in the project; its content is checked in RVU.2.1.2.
 Check: has a requirements document been used, with each requirement under a unique ID and one or two lines long?
 - Requirements document with unique requirement IDs and requirements one or two lines long used: `compliant`.
 - A document with another structure used for the requirements (for example an architecture document): `minor non-compliant`.
@@ -96,12 +103,15 @@ Check: have FPGA project creation TCL scripts been used?
 - No project creation scripts used: `major non-compliant`.
 
 #### RVU.1.3 Simulation with SIMU
+Scope: checks the simulation flow (SIMU); the verification methodology is checked in RVU.5.2.
+SIMU is a repo under https://github.com/wolfy-42/.
 Check: has simulation been performed with SIMU?
 - SIMU used: `compliant`.
 - Simulation performed with other scripts and methodology: `minor non-compliant`.
 - No simulation performed: `major non-compliant`.
 
 #### RVU.1.4 Simulation/Verification Test Plan and Report
+Scope: checks that a simulation/verification test plan and report are used; the plan's content is checked in RVU.2.3.1.
 Check: have a simulation/verification test plan and a simulation/verification test report been used?
 - Simulation/verification test plan and test report used: `compliant`.
 - Only a simulation/verification test report made, without a test plan: `minor non-compliant`.
@@ -109,6 +119,7 @@ Check: have a simulation/verification test plan and a simulation/verification te
 - No simulation/verification test plan and no test report: `major non-compliant`.
 
 #### RVU.1.5 Validation Lab Test Plan and Report
+Scope: checks that a validation lab test plan and report are used; the plan's content is checked in RVU.2.3.2.
 Check: have a validation lab test plan and a validation lab test report been used?
 - Validation lab test plan and test report used: `compliant`.
 - Only a validation lab test report made, without a test plan: `minor non-compliant`.
@@ -116,6 +127,7 @@ Check: have a validation lab test plan and a validation lab test report been use
 - No validation lab test plan and no test report: `major non-compliant`.
 
 #### RVU.1.6 Lab Testing Automation Python Scripts
+Scope: checks that lab test automation is scripted in Python; what the scripts check is RVU.7.2.
 Check: have lab testing automation Python scripts been used?
 - Python lab testing scripts used: `compliant`.
 - Non-Python lab testing scripts used: `minor non-compliant`.
@@ -137,7 +149,8 @@ One check per PL document below. Grading for each check: document present and co
 Check: is there a checklist document listing all deliverables for the project?
 
 ##### RVU.2.1.2 Requirements Document
-Check: is there a requirements document listing the requirements, each under a unique ID and one or two lines long?
+Scope: checks the content of the requirements document; RVU.1.1 checks that it is used.
+Check: does the requirements document list the requirements, each under a unique ID and one or two lines long?
 
 ##### RVU.2.1.3 Risk Assessment
 Check: is there a risk assessment containing:
@@ -169,10 +182,12 @@ Check: is there a logic size, resources and pins estimation with the FPGA device
 One check per project document below. Grading for each check: document present and complete = `compliant`; present but incomplete = `minor non-compliant`; missing = `major non-compliant`.
 
 ##### RVU.2.3.1 Verification Plan for Simulation
-Check: has a verification plan for simulation been created?
+Scope: checks the content of the verification plan; RVU.1.4 checks that it is used.
+Check: has a verification plan for simulation been created, and is it complete?
 
 ##### RVU.2.3.2 Validation Test Plan for Lab Testing
-Check: has a validation test plan document for lab testing been created?
+Scope: checks the content of the validation test plan; RVU.1.5 checks that it is used.
+Check: has a validation test plan document for lab testing been created, and is it complete?
 
 ### RVU.3 RTL Review
 
@@ -235,6 +250,8 @@ Check the verification (simulation) code: does it follow the coding guidelines?
 - Third-party coding rules took precedence over the coding guidelines: `not-applicable`.
 
 #### RVU.5.2 Simulation Methodology
+Scope: checks the verification methodology (SIMU/SSVE-like or UVM); RVU.1.3 checks the simulation flow.
+SIMU and SSVE are repos under https://github.com/wolfy-42/.
 Check the simulation methodology: is SIMU, or a methodology close to SSVE, used?
 - SIMU or a methodology close to SSVE used: `compliant`.
 - No methodology like SSVE or UVM used: `major non-compliant`.
@@ -267,6 +284,7 @@ Check the validation (lab test) code: does it follow the coding guidelines?
 - Third-party coding rules took precedence over the coding guidelines: `not-applicable`.
 
 #### RVU.7.2 Python Functional Checks Against Requirement IDs
+Scope: checks what the Python scripts check (functionality against requirement IDs); RVU.1.6 checks the scripting language.
 Check the validation: is Python scripting used to check the functionality against the requirement IDs?
 - Python scripting checks the functionality against the requirement IDs: `compliant`.
 - Otherwise: `major non-compliant`.

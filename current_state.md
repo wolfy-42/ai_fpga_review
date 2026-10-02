@@ -3,7 +3,7 @@
 
 # Current State: fpga review
 
-_Last updated: 2026-10-01 21:06 (America/Toronto)_
+_Last updated: 2026-10-01 21:24 (America/Toronto)_
 
 ## Update rule
 
@@ -20,7 +20,7 @@ _Last updated: 2026-10-01 21:06 (America/Toronto)_
 
 **2.1** `claude/claude.md` is the entry point. It points to `rules.md` and `current_state.md`.
 
-**2.2** `claude/rules.md` holds rules 1–12 and Appendix RVU Rules. Rule 12: every review report is produced as both `.md` and `.xlsx` at the same time. Rule 8.4 sets where review reports are stored (`claude/reviews/fpga_review_report_<design>_<YYYY-MM-DD>.md`). Rule 11 defines the 6-column review results table; rule 11.7 says the template already contains it. Appendix RVU Rules has sections RVU.0–RVU.8, and every major section has at least one rule.
+**2.2** `claude/rules.md` holds rules 1–13 and Appendix RVU Rules. Rule 13: conflicts and open items about the rules go in `rules_conflicts.md`, numbered OI.N / OI.N.M. Rule 12: every review report is produced as both `.md` and `.xlsx` at the same time. Rule 8.4 sets where review reports are stored (`claude/reviews/fpga_review_report_<design>_<YYYY-MM-DD>.md`). Rule 11 defines the 6-column review results table; rule 11.7 says the template already contains it. Appendix RVU Rules has sections RVU.0–RVU.8, and every major section has at least one rule.
 
 **2.2.1** RVU.0: execute it last; a 5-column table with one row per major section (section ID, title, % compliant, % minor non-compliant, % major non-compliant). Not-applicable items are excluded from the totals.
 
@@ -38,9 +38,11 @@ _Last updated: 2026-10-01 21:06 (America/Toronto)_
 
 **2.2.8** RVU.7 Lab Debug-Integration-Validation: RVU.7.1 Coding Guidelines (same grading as RVU.3.1), RVU.7.2 Python Functional Checks Against Requirement IDs. RVU.8 Deliverables: RVU.8.1 Checklist Items in Project Output Products.
 
-**2.3** `claude/template_fpga_review_report.md` has the same sections and subsections as Appendix RVU Rules, the pre-built RVU.0 scores table, and a 6-column results table with one empty row under each of the 34 RVU items. Every item has an intent; the major sections RVU.1–RVU.8 do not yet (open item 7).
+**2.3** `claude/template_fpga_review_report.md` has the same sections and subsections as Appendix RVU Rules, the pre-built RVU.0 scores table, and a 6-column results table with one empty row under each of the 34 RVU items. Every item has an intent and a pre-filled Description (column 2).
 
-**2.4** `claude/review_open_items.md` has open items 3, 4, 6, 7, 13, 23, 24 and 26–31. The highest number used so far is 31. On 2026-10-01 at 21:00 items 8, 11, 12, 14–17, 19–22 and 25 were closed with D's answers.
+**2.4** `claude/review_open_items.md` holds only open items about the design under review, numbered ROI.N / ROI.N.M with a separate sequence per project under review (rule 6.1). So far only the "General" heading exists: ROI.1 (first design to review). Highest number used under General: ROI.1.
+
+**2.4.1** `claude/rules_conflicts.md` holds the open items about the rules: OI.4, OI.5.1, OI.6 and OI.12 (SIMU/SSVE repo links and details, SSVE AI project, coding guidelines). Highest number used: OI.12. On 2026-10-01 at 21:20 OI.1–OI.3, OI.5.2 and OI.7–OI.11 were closed with D's answers: duplicate checks kept and reworded with "Scope:" lines (RVU.1 checks use, later sections check content), D enters results columns 4–5 during the review (rule 11.5.1), all-N/A sections show N/A in RVU.0, the template's Description column is pre-filled from the rules, the Excel and .md reports go in the Mac repo `reviews/` folder (rule 12), and the major-section intent lines were removed from the template.
 
 **2.5** `claude/archive/` holds the backups.
 
@@ -50,19 +52,19 @@ _Last updated: 2026-10-01 21:06 (America/Toronto)_
 
 **2.7.1** On 2026-10-01 at 21:06 a Coding Guidelines check was inserted as the first item of RVU.3, RVU.5 and RVU.7; the existing items there moved down by one (RVU.3.1–3.5 → 3.2–3.6, RVU.5.1–5.2 → 5.2–5.3, RVU.7.1 → 7.2).
 
-**2.8** Terms: PL = Project Lead (spelled out at first use, in the RVU.2.1 heading; renamed from TPL / Technical Project Lead on 2026-10-01). CDC = clock domain crossing, RDC = reset domain crossing (RVU.3.4). FSM = finite state machine (RVU.3.5). HDL Coder = MATLAB/Simulink HDL generation tool; SysGen = System Generator (RVU.4.1). HLS = high-level synthesis (RVU.4.2). SIMU and SSVE: not defined yet (open items 13 and 23).
+**2.8** Terms: PL = Project Lead (spelled out at first use, in the RVU.2.1 heading; renamed from TPL / Technical Project Lead on 2026-10-01). CDC = clock domain crossing, RDC = reset domain crossing (RVU.3.4). FSM = finite state machine (RVU.3.5). HDL Coder = MATLAB/Simulink HDL generation tool; SysGen = System Generator (RVU.4.1). HLS = high-level synthesis (RVU.4.2). SIMU and SSVE: repos under https://github.com/wolfy-42/ (exact links and SSVE meaning are OI.4 and OI.5.1).
 
 **2.9** On 2026-10-01 at 20:10 another session also wrote backups to `claude/archive/` and removed older ones, so more than one session may be editing this project.
 
 **3. Local copy and git**
 
-**3.1** The five files are copied to the Mac at `~/writing/github_wolfy-42_simu-documentation/ai_fpga_review`, which is a git repo on branch `main`. Commit author: `wolfy-42 <168792347+wolfy-42@users.noreply.github.com>`.
+**3.1** The project files are copied to the Mac at `~/writing/github_wolfy-42_simu-documentation/ai_fpga_review`, which is a git repo on branch `main`. Commit author: `wolfy-42 <168792347+wolfy-42@users.noreply.github.com>`.
 
-**3.2** Remote: `origin = git@github.com:wolfy-42/ai_fpga_review.git`. Commits on `main`: GitHub's "Initial commit", "Add FPGA review project files", "Add SPDX MIT license header to all files" (all pushed), and `0bcae0d` "Rename review numbering to RVU and add review rules" (2026-10-01, contains all the 2026-10-01 changes).
+**3.2** Remote: `origin = git@github.com:wolfy-42/ai_fpga_review.git`. Commits on `main`: "Initial commit", "Add FPGA review project files", "Add SPDX MIT license header to all files", `0bcae0d` "Rename review numbering to RVU and add review rules" (all pushed), and `d83fa2b` "Resolve open items, add coding guidelines checks and report tables" (2026-10-01 21:08).
 
-**3.3** `0bcae0d` is committed locally but not pushed: the session sandbox on the Mac has no SSH keys for GitHub. D is to push it from their own Terminal (`git push`).
+**3.3** `d83fa2b` is committed locally but not pushed: the session sandbox on the Mac has no SSH keys for GitHub. D is to push it from their own Terminal (`git push`).
 
-**3.4** The local copies aren't synced automatically with the project files. They only change when D asks for them to be copied again. The 2026-10-01 21:00 open-item resolutions are not in the local repo yet (commit `0bcae0d` predates them).
+**3.4** The local copies aren't synced automatically with the project files. They only change when D asks for them to be copied again. Commit `d83fa2b` predates `rules_conflicts.md` and rule 13 (2026-10-01 21:13).
 
 **4. In progress:** nothing.
 
